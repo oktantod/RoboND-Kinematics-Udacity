@@ -4,10 +4,8 @@
 ## [Rubric](https://review.udacity.com/#!/rubrics/972/view) Points
 ---
 
-## Forward Kinematic Analysis
-
-### Extracting joint positions and orientations from URDF file.
-
+### Kinematic Analysis
+#### 1. Run the forward_kinematics demo and evaluate the kr210.urdf.xacro file to perform kinematic analysis of Kuka KR210 robot and derive its DH parameters.
 
 Using the DH methods suggested by Udacity, the following sketch was completed and a DH table was constructed:
 
@@ -57,7 +55,7 @@ s = {alpha0:      0, a0:      0, d1:  0.75, q1:        q1,
      alpha6:      0, a6:      0, d7: 0.303, q7:         0}
 ```
 
-### Creating the individual transformation matrices about each joint:
+#### 2. Using the DH parameter table you derived earlier, create individual transformation matrices about each joint. In addition, also generate a generalized homogeneous transform between base_link and gripper_link using only end-effector(gripper) pose.
 
 Using above DH parameter table, we can create individual transforms between various links. DH convention uses four individual transforms: 
 
@@ -209,33 +207,6 @@ We substitute the obtained roll, pitch and yaw in the final rotation matrix. Pyt
     ROT_EE = ROT_EE * ROT_corr
     ROT_EE = ROT_EE.subs({'r': roll, 'p': pitch, 'y': yaw})
 ```
-
-The obtained matrix will be the rotation part of the full homogeneous transform matrix as yellow highlighted in the following:
-
-<p align="center"> <img src="./misc_images/homo-xform-2.png"> </p>
-
-<p align="center"> <img src="./misc_images/R_EE.png"> </p>
-
-where **l**, **m** and **n** are orthonormal vectors representing the end-effector orientation along X, Y, Z axes of the local coordinate frame.
-
-Since **n** is the vector along the **z-axis** of the **gripper_link**, we can say the following:
-
-<p align="center"> <img src="./misc_images/ik_equ.png"> </p>
-
-Where,
-
-**Px, Py, Pz** = end-effector positions obtained from test case data
-
-**Xwc, Ywc, Zwc** = wrist center positions that we are trying to find.
-
-**d6** = link_6 length obtained from DH table (d6=0)
-
-**d7** = end-effector length obtained from DH table (d7=0.303)
-
-The same equation in vectorized version (d is the displacement):
-
-<p align="center"> <img src="./misc_images/WC.png"> </p>
-
 In Python code:
 
 ```python
@@ -243,6 +214,8 @@ In Python code:
     WC = EE - (0.303) * ROT_EE[:,2]
 ```
 WC is now having position of wrist center (Wx, Wy, Wz).
+
+#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
 To find Theta1, we need to project Wz onto the ground plane Thus,
 
