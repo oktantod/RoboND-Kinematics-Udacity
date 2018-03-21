@@ -126,10 +126,6 @@ Individual transform matrices about each joint using the DH table are as followi
 
 #### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
-## Inverse Kinematics Analysis
-
-Since the last three joints in KUKA KR210 robot (Joint_4, Joint_5, and Joint_6) are revolute and their joint axes intersect at a single point (Joint_5), we have a case of spherical wrist with joint_5 being the common intersection point; the wrist center. This allows us to kinematically decouple the IK problem into Inverse Position and Inverse Orientation problems.
-
 First step is to get the end-effector position(Px, Py, Pz) and orientation (Roll, Pitch, Yaw) from the test cases data class as shown in below code:
 
 ```python
