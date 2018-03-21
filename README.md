@@ -194,15 +194,15 @@ WC is now having position of wrist center (Wx, Wy, Wz).
 
 To find Theta1, we need to project Wz onto the ground plane Thus,
 
-**Theta1=atan2(Wy,Wx)**
+Theta1=atan2(Wy,Wx)
 
 ```python
     # Calculate theat1
     theta1 = atan2(WC[1],WC[0])
 ```
-Using trigonometry, we can calculate **Theta2 dan Theta3**. 
+Using trigonometry, we can calculate Theta2 dan Theta3. 
 
-We have a triangle (the green color in below figure) with two sides known to us (**A** = d4 = 1.5) and (**C** = a2 = 1.25), the 3rd side (**B**) can be calculated as following:
+We have a triangle (the green color in below figure) with two sides known to us (A = d4 = 1.5) and (C = a2 = 1.25), the 3rd side (B) can be calculated as following:
 
 <p align="center"> <img src="./misc_images/B.png"> </p>
 
@@ -214,7 +214,7 @@ Below is the same in Python code:
     C = 1.25
     B = sqrt(pow((sqrt(WC[0]*WC[0] + WC[1]*WC[1]) - 0.35), 2) + pow((WC[2] - 0.75), 2))
 ``` 
-Now since we have all three sides of the triangle known to us we can calculate all of the three inner angles of the triangle from the known three sides Using trigonometry (specifically the **Cosine Laws** SSS type).
+Now since we have all three sides of the triangle known to us we can calculate all of the three inner angles of the triangle from the known three sides Using trigonometry (specifically the Cosine Laws SSS type).
 
 <p align="center"> <img src="./misc_images/coslaw.png"> </p>
 
@@ -225,7 +225,7 @@ The same in Python code:
     b = acos((A*A + C*C - B*B) / (2*A*C))
     c = acos((A*A + B*B - C*C) / (2*A*B))
 ```
-Finally we calculate **Theta2** and **Theta3**
+Finally we calculate Theta2 and Theta3
 
 ```python
     theta2 = pi/2 - a - atan2(WC[2]-0.75, sqrt(WC[0]*WC[0]+WC[1]*WC[1])-0.35)
@@ -235,27 +235,23 @@ Finally we calculate **Theta2** and **Theta3**
 
 ### Inverse Orientation
 
-For the **Inverse Orientation** problem, we need to find values of the final three joint variables **Theta4, Theta5 and Theta6**.
+For the Inverse Orientation problem, we need to find values of the final three joint variables Theta4, Theta5 and Theta6.
 
 Using the individual DH transforms we can obtain the resultant transform and hence resultant rotation by:
 
-**R0_6 = R0_1*R1_2*R2_3*R3_4*R4_5*R5_6**
-
-Since the overall RPY (Roll Pitch Yaw) rotation between base_link and gripper_link must be equal to the product of individual rotations between respective links, following holds true:
-
-**R0_6 = R_EE**
+R0_6 = R_EE
 
 where,
 
-**R_EE** = Homogeneous RPY rotation between base_link and gripper_link as calculated above.
+R_EE = Homogeneous RPY rotation between base_link and gripper_link as calculated above.
 
-We can substitute the values we calculated for **Theta1, Theta2 and Theta3**. in their respective individual rotation matrices and pre-multiply both sides of the above equation by **inv(R0_3)** which leads to:
+We can substitute the values we calculated for Theta1, Theta2 and Theta3. in their respective individual rotation matrices and pre-multiply both sides of the above equation by inv(R0_3) which leads to:
 
-**R3_6 = inv(R0_3) * R_EE**
+R3_6 = inv(R0_3) * R_EE
 
 <p align="center"> <img src="./misc_images/R3_6.png"> </p>
 
-The resultant matrix on the RHS (Right Hand Side of the equation) does not have any variables after substituting the joint angle values, and hence comparing LHS (Left Hand Side of the equation) with RHS will result in equations for **Theta4, Theta5 and Theta6**.
+The resultant matrix on the RHS (Right Hand Side of the equation) does not have any variables after substituting the joint angle values, and hence comparing LHS (Left Hand Side of the equation) with RHS will result in equations for Theta4, Theta5 and Theta6.
 
 ```python
     # Extract rotation matrix R0_3 from transformation matrix T0_3 the substitute angles q1-3
