@@ -120,25 +120,11 @@ R_corr = (R_z * R_y)
 T_total= (T0_7 * R_corr)
 ```
 
-To check results we can evaluate the individual results when all thetas are equal to zero and compare it to rviz simulator values. I have used pretty print (pprint) to show the resulting matrix as shown in below code.
-
-```python
-### Numerically evaluate transforms (compare this to output of tf_echo/rviz)
-
-print("\nT0_7 = \n")
-pprint(T0_7.evalf(subs={q1: 0, q2: 0, q3: 0, q4: 0, q5: 0, q6: 0}))
-
-```
-Remember that the homogeneous transform consists of a rotation part and a translation part as follows:
-
-<p align="center"> <img src="./misc_images/fw_tf_mat2.png"> </p>
-
-where Px, Py, Pz represent the position of end-effector w.r.t. base_link and RT represent the rotation part using the Roll-Pitch-Yaw angles
-
 Individual transform matrices about each joint using the DH table are as following:
 
-
 <p align="center"> <img src="./misc_images/matrices.png"> </p>
+
+#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
 ## Inverse Kinematics Analysis
 
@@ -211,8 +197,6 @@ In Python code:
     WC = EE - (0.303) * ROT_EE[:,2]
 ```
 WC is now having position of wrist center (Wx, Wy, Wz).
-
-#### 3. Decouple Inverse Kinematics problem into Inverse Position Kinematics and inverse Orientation Kinematics; doing so derive the equations to calculate all individual joint angles.
 
 To find Theta1, we need to project Wz onto the ground plane Thus,
 
